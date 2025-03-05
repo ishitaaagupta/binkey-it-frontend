@@ -1,14 +1,18 @@
-
-import './App.css'
+import { Outlet } from "react-router-dom";
+import "./App.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
-
   return (
-   <main className='text-red-400'>
-    Vite App
-  
-   </main>
-  )
+    <>
+      <Header />
+      <main className='min-h-[78vh]'>
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  );
 }
 
-export default App
+export default App;
