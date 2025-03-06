@@ -31,7 +31,10 @@ const Login = () => {
     }
 
     const valideValue = Object.values(data).every(el => el)
+const handleSubmit = (e) => {
 
+    e.preventDefault()
+}
 
     // const handleSubmit = async(e)=>{
     //     e.preventDefault()
@@ -73,7 +76,7 @@ const Login = () => {
             <div className='bg-white my-4 w-full max-w-lg mx-auto rounded p-7'>
 
                 <form className='grid gap-4 py-4'
-                //  onSubmit={handleSubmit}
+                 onSubmit={handleSubmit}
                  >
                     <div className='grid gap-1'>
                         <label htmlFor='email'>Email :</label>
@@ -109,7 +112,7 @@ const Login = () => {
                                 }
                             </div>
                         </div>
-                        {/* <Link to={"/forgot-password"} className='block ml-auto hover:text-primary-200'>Forgot password ?</Link> */}
+                        <Link to={"/forgot-password"} className='block ml-auto hover:text-primary-200'>Forgot password ?</Link>
                     </div>
     
                     <button disabled={!valideValue} className={` ${valideValue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500" }    text-white py-2 rounded font-semibold my-3 tracking-wide`}>Login</button>
