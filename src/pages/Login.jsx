@@ -83,7 +83,7 @@ const handleSubmit = (e) => {
                         <input
                             type='email'
                             id='email'
-                            className='bg-blue-50 p-2 border rounded outline-none focus:border-primary-200'
+                            className='bg-gray-50 p-2 border rounded outline-none focus:border-primary-200'
                             name='email'
                             value={data.email}
                             onChange={handleChange}
@@ -92,7 +92,7 @@ const handleSubmit = (e) => {
                     </div>
                     <div className='grid gap-1'>
                         <label htmlFor='password'>Password :</label>
-                        <div className='bg-blue-50 p-2 border rounded flex items-center focus-within:border-primary-200'>
+                        <div className='bg-gray-50 p-2 border rounded flex items-center focus-within:border-primary-200'>
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id='password'
