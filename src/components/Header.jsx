@@ -5,8 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegCircleUser } from "react-icons/fa6";
 import useMobile from "../hooks/useMobile";
 import { BsCart4 } from "react-icons/bs";
-// import { useEffect } from "react";
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { GoTriangleDown, GoTriangleUp  } from "react-icons/go";
 import UserMenu from './UserMenu';
 import { useState } from "react";
@@ -19,7 +18,7 @@ const Header = () => {
   const location = useLocation();
   const isSearchPage = location.pathname === "/search";
   const navigate = useNavigate();
-  // const user = useSelector((state)=> state?.user)
+  const user = useSelector((state)=> state?.user)
   const [openUserMenu,setOpenUserMenu] = useState(false)
   // const cartItem = useSelector(state => state.cartItem.cart)
   // const [totalPrice,setTotalPrice] = useState(0)
@@ -35,8 +34,6 @@ const Header = () => {
       setOpenUserMenu(false)
   }
 
-
-  const user = { _id: "613206996696969756" }; //hardcode ki h just to check user id
 
   const handleMobileUser = ()=>{
       if(!user._id){

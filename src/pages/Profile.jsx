@@ -43,26 +43,26 @@ const Profile = () => {
     const handleSubmit = async(e)=>{
         e.preventDefault()
         
-        // try {
-        //     setLoading(true)
-        //     const response = await Axios({
-        //         ...SummaryApi.updateUserDetails,
-        //         data : userData
-        //     })
+        try {
+            setLoading(true)
+            const response = await Axios({
+                ...SummaryApi.updateUserDetails,
+                data : userData
+            })
 
-        //     const { data : responseData } = response
+            const { data : responseData } = response
 
-        //     if(responseData.success){
-        //         toast.success(responseData.message)
-        //         const userData = await fetchUserDetails()
-        //         dispatch(setUserDetails(userData.data))
-        //     }
+            if(responseData.success){
+                toast.success(responseData.message)
+                const userData = await fetchUserDetails()
+                dispatch(setUserDetails(userData.data))
+            }
 
-        // } catch (error) {
-        //     AxiosToastError(error)
-        // } finally{
-        //     setLoading(false)
-        // }
+        } catch (error) {
+            AxiosToastError(error)
+        } finally{
+            setLoading(false)
+        }
 
     }
   return (

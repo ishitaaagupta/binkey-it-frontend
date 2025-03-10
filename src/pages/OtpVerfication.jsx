@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-// import { FaRegEyeSlash } from "react-icons/fa6";
-// import { FaRegEye } from "react-icons/fa6";
-// import toast from 'react-hot-toast';
-// import Axios from '../utils/Axios';
-// import SummaryApi from '../common/SummaryApi';
-// import AxiosToastError from '../utils/AxiosToastError';
+import { FaRegEyeSlash } from "react-icons/fa6";
+import { FaRegEye } from "react-icons/fa6";
+import toast from 'react-hot-toast';
+import Axios from '../utils/Axios';
+import SummaryApi from '../common/SummaryApi';
+import AxiosToastError from '../utils/AxiosToastError';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const OtpVerification = () => {
@@ -15,45 +15,45 @@ const OtpVerification = () => {
 
     console.log("location",location)
 
-    // useEffect(()=>{
-    //     if(!location?.state?.email){
-    //         navigate("/forgot-password")
-    //     }
-    // },[])
+    useEffect(()=>{
+        if(!location?.state?.email){
+            navigate("/forgot-password")
+        }
+    },[])
 
     const valideValue = data.every(el => el)
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
 
-        // try {
-        //     const response = await Axios({
-        //         ...SummaryApi.forgot_password_otp_verification,
-        //         data : {
-        //             otp : data.join(""),
-        //             email : location?.state?.email
-        //         }
-        //     })
+        try {
+            const response = await Axios({
+                ...SummaryApi.forgot_password_otp_verification,
+                data : {
+                    otp : data.join(""),
+                    email : location?.state?.email
+                }
+            })
             
-        //     if(response.data.error){
-        //         toast.error(response.data.message)
-        //     }
+            if(response.data.error){
+                toast.error(response.data.message)
+            }
 
-        //     if(response.data.success){
-        //         toast.success(response.data.message)
-        //         setData(["","","","","",""])
-        //         navigate("/reset-password",{
-        //             state : {
-        //                 data : response.data,
-        //                 email : location?.state?.email
-        //             }
-        //         })
-        //     }
+            if(response.data.success){
+                toast.success(response.data.message)
+                setData(["","","","","",""])
+                navigate("/reset-password",{
+                    state : {
+                        data : response.data,
+                        email : location?.state?.email
+                    }
+                })
+            }
 
-        // } catch (error) {
-        //     console.log('error',error)
-        //     AxiosToastError(error)
-        // }
+        } catch (error) {
+            console.log('error',error)
+            AxiosToastError(error)
+        }
 
 
 

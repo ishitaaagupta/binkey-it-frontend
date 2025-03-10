@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-// import { FaRegEyeSlash } from "react-icons/fa6";
-// import { FaRegEye } from "react-icons/fa6";
-// import toast from 'react-hot-toast';
-// import Axios from '../utils/Axios';
-// import SummaryApi from '../common/SummaryApi';
-// import AxiosToastError from '../utils/AxiosToastError';
+import { FaRegEyeSlash } from "react-icons/fa6";
+import { FaRegEye } from "react-icons/fa6";
+import toast from 'react-hot-toast';
+import Axios from '../utils/Axios';
+import SummaryApi from '../common/SummaryApi';
+import AxiosToastError from '../utils/AxiosToastError';
 import { Link, useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
@@ -30,30 +30,30 @@ const ForgotPassword = () => {
     const handleSubmit = async(e)=>{
         e.preventDefault()
 
-        // try {
-        //     const response = await Axios({
-        //         ...SummaryApi.forgot_password,
-        //         data : data
-        //     })
+        try {
+            const response = await Axios({
+                ...SummaryApi.forgot_password,
+                data : data
+            })
             
-        //     if(response.data.error){
-        //         toast.error(response.data.message)
-        //     }
+            if(response.data.error){
+                toast.error(response.data.message)
+            }
 
-        //     if(response.data.success){
-        //         toast.success(response.data.message)
-        //         navigate("/verification-otp",{
-        //           state : data
-        //         })
-        //         setData({
-        //             email : "",
-        //         })
+            if(response.data.success){
+                toast.success(response.data.message)
+                navigate("/verification-otp",{
+                  state : data
+                })
+                setData({
+                    email : "",
+                })
                 
-        //     }
+            }
 
-        // } catch (error) {
-        //     AxiosToastError(error)
-        // }
+        } catch (error) {
+            AxiosToastError(error)
+        }
 
 
 
