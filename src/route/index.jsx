@@ -14,6 +14,17 @@ import MyOrders from "../pages/MyOrders";
 import Address from "../pages/Address";
 import AdminPermision from "../layouts/AdminPermision";
 import CategoryPage from "../pages/CategoryPage";
+import UploadProduct from "../pages/UploadProduct";
+import SubCategoryPage from "../pages/SubCategoryPage";
+import ProductAdmin from "../pages/ProductAdmin";
+import ProductListPage from "../pages/ProductListPage";
+import ProductDisplayPage from "../pages/ProductDisplayPage";
+import CartMobile from "../pages/CartMobile";
+import CheckoutPage from "../pages/CheckoutPage";
+import Success from "../pages/Success";
+import Cancel from "../pages/Cancel";
+
+
 
 
 const router = createBrowserRouter([
