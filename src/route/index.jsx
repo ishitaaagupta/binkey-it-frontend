@@ -11,6 +11,9 @@ import UserMenuMobile from "../pages/userMenuMobile"
 import Dashboard from "../layouts/Dashboard";
 import Profile from "../pages/Profile";
 import MyOrders from "../pages/MyOrders";
+import Address from "../pages/Address";
+import AdminPermision from "../layouts/AdminPermision";
+import CategoryPage from "../pages/CategoryPage";
 
 
 const router = createBrowserRouter([
@@ -61,11 +64,60 @@ const router = createBrowserRouter([
         {
           path:"MyOrders",
           element:<MyOrders/>
-        }
-      ]
-    },
-    ],
-  },
-]);
+        },
+        {
+          path : "address",
+          element : <Address/>
+      },
+      {
+          path : 'category',
+          element : <AdminPermision><CategoryPage/></AdminPermision>
+      },
+      {
+          path : "subcategory",
+          element : <AdminPermision><SubCategoryPage/></AdminPermision>
+      },
+      {
+          path : 'upload-product',
+          element : <AdminPermision><UploadProduct/></AdminPermision>
+      },
+      {
+          path : 'product',
+          element : <AdminPermision><ProductAdmin/></AdminPermision>
+      }
+  ]
+},
+{
+  path : ":category",
+  children : [
+      {
+          path : ":subCategory",
+          element : <ProductListPage/>
+      }
+  ]
+},
+{
+  path : "product/:product",
+  element : <ProductDisplayPage/>
+},
+{
+  path : 'cart',
+  element : <CartMobile/>
+},
+{
+  path : "checkout",
+  element : <CheckoutPage/>
+},
+{
+  path : "success",
+  element : <Success/>
+},
+{
+  path : 'cancel',
+  element : <Cancel/>
+}
+]
+}
+])
 
-export default router;
+export default router
