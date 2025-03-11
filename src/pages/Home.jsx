@@ -67,7 +67,7 @@ const Home = () => {
               return (
                 <div
                   key={cat._id + "displayCategory"}
-                  className="w-full h-full"
+                  className="w-full h-full cursor-pointer transition-transform transform hover:scale-105 hover:shadow-lg"
                   onClick={() =>
                     handleRedirectProductListpage(cat._id, cat.name)
                   }
