@@ -1,8 +1,9 @@
 import React from 'react'
+import DisplayCartItem from '../components/DisplayCartItem'
 
-function CartMobile() {
+const CartMobile = () => {
   return (
-    <div>CartMobile</div>
+    <DisplayCartItem/>
   )
 }
 
