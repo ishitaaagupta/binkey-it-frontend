@@ -11,7 +11,6 @@ import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
 import AxiosToastError from "../utils/AxiosToastError";
 import successAlert from "../utils/SuccessAlert";
-import { useEffect } from "react";
 
 const UploadProduct = () => {
   const [data, setData] = useState({
@@ -32,77 +31,82 @@ const UploadProduct = () => {
   const [selectCategory, setSelectCategory] = useState("");
   const [selectSubCategory, setSelectSubCategory] = useState("");
   const allSubCategory = useSelector((state) => state.product.allSubCategory);
-
   const [openAddField, setOpenAddField] = useState(false);
   const [fieldName, setFieldName] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setData((preve) => {
-      return {
-        ...preve,
-        [name]: value,
-      };
-    });
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleUploadImage = async (e) => {
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files); // Get all selected files
 
-    if (!file) {
+    if (!files.length) {
       return;
     }
-    setImageLoading(true);
-    const response = await uploadImage(file);
-    const { data: ImageResponse } = response;
-    const imageUrl = ImageResponse.data.url;
 
-    setData((preve) => {
-      return {
-        ...preve,
-        image: [...preve.image, imageUrl],
-      };
-    });
+    setImageLoading(true);
+    const uploadedImages = await Promise.all(
+      files.map(async (file) => {
+        const response = await uploadImage(file);
+        const { data: ImageResponse } = response;
+        return ImageResponse.data.url; // Return the image URL
+      })
+    );
+
+    setData((prev) => ({
+      ...prev,
+      image: [...prev.image, ...uploadedImages], // Append new images to the existing array
+    }));
     setImageLoading(false);
   };
 
-  const handleDeleteImage = async (index) => {
-    data.image.splice(index, 1);
-    setData((preve) => {
+  const handleDeleteImage = (index) => {
+    setData((prev) => {
+      const newImages = [...prev.image];
+      newImages.splice(index, 1);
       return {
-        ...preve,
+        ...prev,
+        image: newImages,
       };
     });
   };
 
-  const handleRemoveCategory = async (index) => {
-    data.category.splice(index, 1);
-    setData((preve) => {
+  const handleRemoveCategory = (index) => {
+    setData((prev) => {
+      const newCategories = [...prev.category];
+      newCategories.splice(index, 1);
       return {
-        ...preve,
+        ...prev,
+        category: newCategories,
       };
     });
   };
-  const handleRemoveSubCategory = async (index) => {
-    data.subCategory.splice(index, 1);
-    setData((preve) => {
+
+  const handleRemoveSubCategory = (index) => {
+    setData((prev) => {
+      const newSubCategories = [...prev.subCategory];
+      newSubCategories.splice(index, 1);
       return {
-        ...preve,
+        ...prev,
+        subCategory: newSubCategories,
       };
     });
   };
 
   const handleAddField = () => {
-    setData((preve) => {
-      return {
-        ...preve,
-        more_details: {
-          ...preve.more_details,
-          [fieldName]: "",
-        },
-      };
-    });
+    setData((prev) => ({
+      ...prev,
+      more_details: {
+        ...prev.more_details,
+        [fieldName]: "",
+      },
+    }));
     setFieldName("");
     setOpenAddField(false);
   };
@@ -138,12 +142,9 @@ const UploadProduct = () => {
     }
   };
 
-  // useEffect(()=>{
-  //   successAlert("Upload successfully")
-  // },[])
   return (
     <section className="">
-      <div className="p-2   bg-white shadow-md flex items-center justify-between">
+      <div className="p-2 bg-white shadow-md flex items-center justify-between">
         <h2 className="font-semibold">Upload Product</h2>
       </div>
       <div className="grid p-3">
@@ -169,13 +170,11 @@ const UploadProduct = () => {
             </label>
             <textarea
               id="description"
-              type="text"
               placeholder="Enter product description"
               name="description"
               value={data.description}
               onChange={handleChange}
               required
-              multiple
               rows={3}
               className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded resize-none"
             />
@@ -202,32 +201,30 @@ const UploadProduct = () => {
                   id="productImage"
                   className="hidden"
                   accept="image/*"
+                  multiple // Allow multiple file selection
                   onChange={handleUploadImage}
                 />
               </label>
-              {/**display uploded image*/}
               <div className="flex flex-wrap gap-4">
-                {data.image.map((img, index) => {
-                  return (
+                {data.image.map((img, index) => (
+                  <div
+                    key={img + index}
+                    className="h-20 mt-1 w-20 min-w-20 bg-blue-50 border relative group"
+                  >
+                    <img
+                      src={img}
+                      alt={img}
+                      className="w-full h-full object-scale-down cursor-pointer"
+                      onClick={() => setViewImageURL(img)}
+                    />
                     <div
-                      key={img + index}
-                      className="h-20 mt-1 w-20 min-w-20 bg-blue-50 border relative group"
+                      onClick={() => handleDeleteImage(index)}
+                      className="absolute bottom-0 right-0 p-1 bg-red-600 hover:bg-red-600 rounded text-white hidden group-hover:block cursor-pointer"
                     >
-                      <img
-                        src={img}
-                        alt={img}
-                        className="w-full h-full object-scale-down cursor-pointer"
-                        onClick={() => setViewImageURL(img)}
-                      />
-                      <div
-                        onClick={() => handleDeleteImage(index)}
-                        className="absolute bottom-0 right-0 p-1 bg-red-600 hover:bg-red-600 rounded text-white hidden group-hover:block cursor-pointer"
-                      >
-                        <MdDelete />
-                      </div>
+                      <MdDelete />
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -241,37 +238,35 @@ const UploadProduct = () => {
                   const value = e.target.value;
                   const category = allCategory.find((el) => el._id === value);
 
-                  setData((preve) => {
-                    return {
-                      ...preve,
-                      category: [...preve.category, category],
-                    };
-                  });
+                  setData((prev) => ({
+                    ...prev,
+                    category: [...prev.category, category],
+                  }));
                   setSelectCategory("");
                 }}
               >
                 <option value={""}>Select Category</option>
-                {allCategory.map((c, index) => {
-                  return <option value={c?._id}>{c.name}</option>;
-                })}
+                {allCategory.map((c) => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
+                  </option>
+                ))}
               </select>
               <div className="flex flex-wrap gap-3">
-                {data.category.map((c, index) => {
-                  return (
+                {data.category.map((c, index) => (
+                  <div
+                    key={c._id + index + "productsection"}
+                    className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
+                  >
+                    <p>{c.name}</p>
                     <div
-                      key={c._id + index + "productsection"}
-                      className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
+                      className="hover:text-red-500 cursor-pointer"
+                      onClick={() => handleRemoveCategory(index)}
                     >
-                      <p>{c.name}</p>
-                      <div
-                        className="hover:text-red-500 cursor-pointer"
-                        onClick={() => handleRemoveCategory(index)}
-                      >
-                        <IoClose size={20} />
-                      </div>
+                      <IoClose size={20} />
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -287,39 +282,37 @@ const UploadProduct = () => {
                     (el) => el._id === value
                   );
 
-                  setData((preve) => {
-                    return {
-                      ...preve,
-                      subCategory: [...preve.subCategory, subCategory],
-                    };
-                  });
+                  setData((prev) => ({
+                    ...prev,
+                    subCategory: [...prev.subCategory, subCategory],
+                  }));
                   setSelectSubCategory("");
                 }}
               >
                 <option value={""} className="text-neutral-600">
                   Select Sub Category
                 </option>
-                {allSubCategory.map((c, index) => {
-                  return <option value={c?._id}>{c.name}</option>;
-                })}
+                {allSubCategory.map((c) => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
+                  </option>
+                ))}
               </select>
               <div className="flex flex-wrap gap-3">
-                {data.subCategory.map((c, index) => {
-                  return (
+                {data.subCategory.map((c, index) => (
+                  <div
+                    key={c._id + index + "productsection"}
+                    className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
+                  >
+                    <p>{c.name}</p>
                     <div
-                      key={c._id + index + "productsection"}
-                      className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
+                      className="hover:text-red-500 cursor-pointer"
+                      onClick={() => handleRemoveSubCategory(index)}
                     >
-                      <p>{c.name}</p>
-                      <div
-                        className="hover:text-red-500 cursor-pointer"
-                        onClick={() => handleRemoveSubCategory(index)}
-                      >
-                        <IoClose size={20} />
-                      </div>
+                      <IoClose size={20} />
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -389,34 +382,30 @@ const UploadProduct = () => {
           </div>
 
           {/**add more field**/}
-          {Object?.keys(data?.more_details)?.map((k, index) => {
-            return (
-              <div className="grid gap-1">
-                <label htmlFor={k} className="font-medium">
-                  {k}
-                </label>
-                <input
-                  id={k}
-                  type="text"
-                  value={data?.more_details[k]}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setData((preve) => {
-                      return {
-                        ...preve,
-                        more_details: {
-                          ...preve.more_details,
-                          [k]: value,
-                        },
-                      };
-                    });
-                  }}
-                  required
-                  className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
-                />
-              </div>
-            );
-          })}
+          {Object.keys(data.more_details).map((k) => (
+            <div className="grid gap-1" key={k}>
+              <label htmlFor={k} className="font-medium">
+                {k}
+              </label>
+              <input
+                id={k}
+                type="text"
+                value={data.more_details[k]}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setData((prev) => ({
+                    ...prev,
+                    more_details: {
+                      ...prev.more_details,
+                      [k]: value,
+                    },
+                  }));
+                }}
+                required
+                className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
+              />
+            </div>
+          ))}
 
           <button className="bg-primary-100 hover:bg-primary-200 py-2 rounded font-semibold">
             Submit
