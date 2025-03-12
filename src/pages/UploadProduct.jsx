@@ -428,5 +428,4 @@ const UploadProduct = () => {
     </section>
   );
 };
-
 export default UploadProduct;
