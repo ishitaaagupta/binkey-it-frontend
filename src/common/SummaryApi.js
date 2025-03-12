@@ -1,5 +1,7 @@
-export const baseURL = import.meta.env.VITE_API_URL;
-
+export const baseURL =
+    window.location.hostname === "localhost"
+        ? "http://localhost:3000"
+        : "https://binkey-it-backend.vercel.app";
 const SummaryApi = {
     register: {
         url: `${baseURL}/api/user/register`,
