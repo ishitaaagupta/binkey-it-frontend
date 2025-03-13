@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import isAdmin from "../utils/isAdmin";
+import Chip from '@mui/material/Chip';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+
 
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
@@ -47,10 +50,11 @@ const UserMenu = ({ close }) => {
       <div className="text-sm flex items-center gap-2">
         <span className="max-w-52 text-ellipsis line-clamp-1">
           {user.name || user.mobile}{" "}
+          {user.role==="ADMIN" &&(
           <span className="font-medium text-white bg-red-600 border border-white px-1 py-1 rounded">
-  {user.role === "ADMIN" ? "ADMIN" : ""}
-</span>
-
+            {user.role === "ADMIN" ? "ADMIN" : ""}
+          </span>
+          )}
         </span>
         <Link
           onClick={handleClose}

@@ -406,6 +406,10 @@ const UploadProduct = () => {
               />
             </div>
           ))}
+             {/* <div onClick={()=>setOpenAddField(true)} className=' hover:bg-primary-200 bg-white py-1 px-3 w-32 text-center font-semibold border border-primary-200 hover:text-neutral-900 cursor-pointer rounded'>
+                  Add Fields
+                </div> */}
+
 
           <button className="bg-primary-100 hover:bg-primary-200 py-2 rounded font-semibold">
             Submit

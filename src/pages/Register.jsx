@@ -1,156 +1,236 @@
 import React, { useState } from "react";
-import { FaRegEyeSlash } from "react-icons/fa6";
-import { FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import AxiosToastError from '../utils/AxiosToastError';
 import { Link, useNavigate } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const Register = () => {
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Email is invalid").required("Email is required"),
+    password: Yup.string().required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
 
-    setData((preve) => {
-      return {
-        ...preve,
-        [name]: value,
-      };
-    });
-  };
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
 
-  const valideValue = Object.values(data).every((el) => el);
+  const onSubmit = async (data) => {
+    try {
+      const response = await Axios({
+        ...SummaryApi.register,
+        data: data
+      });
 
+      if (response.data.error) {
+        toast.error(response.data.message);
+      }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+      if (response.data.success) {
+        toast.success(response.data.message);
+        navigate("/login");
+      }
 
-    if (data.password !== data.confirmPassword) {
-      toast.error("password and confirm password must be same");
-      return;
+    } catch (error) {
+      AxiosToastError(error);
     }
-
-        try {
-            const response = await Axios({
-                ...SummaryApi.register,
-                data : data
-            })
-
-            if(response.data.error){
-                toast.error(response.data.message)
-            }
-
-            if(response.data.success){
-                toast.success(response.data.message)
-                setData({
-                    name : "",
-                    email : "",
-                    password : "",
-                    confirmPassword : ""
-                })
-                navigate("/login")
-            }
-
-        } catch (error) {
-            AxiosToastError(error)
-        }
   };
+
   return (
     <section className="w-full container mx-auto px-2">
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
-        <p class="text-2xl text-center font-bold font-poppins">
+        <p className="text-2xl text-center font-bold font-poppins">
           Register Yourself
         </p>
 
-        <form className="grid gap-4 mt-6" onSubmit={handleSubmit}>
+        <form className="grid gap-4 mt-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-1">
-            <label htmlFor="name">Name :</label>
-            <input
-              type="text"
-              id="name"
-              autoFocus
-              className="bg-gray-50 p-2 border rounded outline-none focus:border-primary-200"
+            <Controller
               name="name"
-              value={data.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Name"
+                  variant="outlined"
+                  error={!!errors.name}
+                  helperText={errors.name ? errors.name.message : ""}
+                  InputLabelProps={{
+                    style: { color: '#1F2937' }, // Green-800 color for label
+                  }}
+                  InputProps={{
+                    style: { backgroundColor: 'transparent' }, // No fill color
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#FFD700', // Yellow outline color
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#FFD700', // Yellow outline on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#FFD700', // Yellow outline when focused
+                      },
+                    },
+                  }}
+                  fullWidth
+                />
+              )}
             />
           </div>
           <div className="grid gap-1">
-            <label htmlFor="email">Email :</label>
-            <input
-              type="email"
-              id="email"
-              className="bg-gray-50 p-2 border rounded outline-none focus:border-primary-200"
+            <Controller
               name="email"
-              value={data.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Email"
+                  variant="outlined"
+                  error={!!errors.email}
+                  helperText={errors.email ? errors.email.message : ""}
+                  InputLabelProps={{
+                    style: { color: '#1F2937' }, // Green-800 color for label
+                  }}
+                  InputProps={{
+                    style: { backgroundColor: 'transparent' }, // No fill color
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#FFD700', // Yellow outline color
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#FFD700', // Yellow outline on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#FFD700', // Yellow outline when focused
+                      },
+                    },
+                  }}
+                  fullWidth
+                />
+              )}
             />
           </div>
           <div className="grid gap-1">
-            <label htmlFor="password">Password :</label>
-            <div className="bg-gray-50 p-2 border rounded flex items-center focus-within:border-primary-200">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                className="w-full outline-none"
-                name="password"
-                value={data.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-              />
-              <div
-                onClick={() => setShowPassword((preve) => !preve)}
-                className="cursor-pointer"
-              >
-                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </div>
-            </div>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  variant="outlined"
+                  error={!!errors.password}
+                  helperText={errors.password ? errors.password.message : ""}
+                  InputLabelProps={{
+                    style: { color: '#1F2937' }, // Green-800 color for label
+                  }}
+                  InputProps={{
+                    style: { backgroundColor: 'transparent' }, // No fill color
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                          {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#FFD700', // Yellow outline color
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#FFD700', // Yellow outline on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#FFD700', // Yellow outline when focused
+                      },
+                    },
+                  }}
+                  fullWidth
+                />
+              )}
+            />
           </div>
           <div className="grid gap-1">
-            <label htmlFor="confirmPassword">Confirm Password :</label>
-            <div className="bg-gray-50 p-2 border rounded flex items-center focus-within:border-primary-200">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                className="w-full outline-none"
-                name="confirmPassword"
-                value={data.confirmPassword}
-                onChange={handleChange}
-                placeholder="Enter your confirm password"
-              />
-              <div
-                onClick={() => setShowConfirmPassword((preve) => !preve)}
-                className="cursor-pointer"
-              >
-                {showConfirmPassword ? <FaRegEye /> : <FaRegEyeSlash />}
-              </div>
-            </div>
+            <Controller
+              name="confirmPassword"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Confirm Password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  variant="outlined"
+                  error={!!errors.confirmPassword}
+                  helperText={errors.confirmPassword ? errors.confirmPassword.message : ""}
+                  InputLabelProps={{
+                    style: { color: '#1F2937' }, // Green-800 color for label
+                  }}
+                  InputProps={{
+                    style: { backgroundColor: 'transparent' }, // No fill color
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowConfirmPassword((prev) => !prev)}
+                        >
+                          {showConfirmPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#FFD700', // Yellow outline color
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#FFD700', // Yellow outline on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#FFD700', // Yellow outline when focused
+                      },
+                    },
+                  }}
+                  fullWidth
+                />
+              )}
+            />
           </div>
 
           <button
-            disabled={!valideValue}
+            type="submit"
             className={` ${
-              valideValue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"
-            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
+              Object.values(errors).length === 0 ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"
+            } text-white py-2 rounded font-semibold my-3 tracking-wide`}
+            disabled={Object.values(errors).length > 0}
           >
             Register
           </button>
         </form>
 
         <p>
-          Already have an account ?{" "}
+          Already have an account?{" "}
           <Link
             to={"/login"}
             className="font-semibold text-green-700 hover:text-green-800"

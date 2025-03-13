@@ -136,6 +136,7 @@ const Header = () => {
                   Login
                 </button>
               )}
+              {user?._id && user?.role !== "ADMIN" && (
               <button
                 onClick={() => setOpenCartSection(true)}
                 className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white"
@@ -155,6 +156,7 @@ const Header = () => {
                   )}
                 </div>
               </button>
+              )}
             </div>
           </div>
         </div>
