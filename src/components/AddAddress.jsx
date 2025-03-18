@@ -75,7 +75,7 @@ const AddAddress = ({ close }) => {
                     </button>
                 </div>
                 <form className='mt-4 grid gap-4' onSubmit={handleSubmit(onSubmit)}>
-                    {['Street Address', 'City', 'State', 'Pincode', 'Country', 'Mobile'].map((field) => (
+                    {['addressline', 'city', 'state', 'pincode', 'country', 'mobile'].map((field) => (
                         <TextField 
                             key={field}
                             id={field}
@@ -92,9 +92,7 @@ const AddAddress = ({ close }) => {
                               }}
                         />
                     ))}
-                    <Button type='submit' fullWidth variant='contained' style={{ backgroundColor: '#FFD700', color: '#008000' }}>
-                        Submit
-                    </Button>
+                   <button type='submit' className='bg-primary-200 w-full  py-2 font-semibold mt-4 hover:bg-primary-100'>Submit</button>
                 </form>
             </motion.div>
         </section>

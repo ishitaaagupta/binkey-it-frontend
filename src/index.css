@@ -34,3 +34,14 @@ body{
 
   }
   
+  .ck-powered-by__label {
+    display: none;
+  }
+   
+  .ck-powered-by {
+    display: none;
+  }
+  .ck.ck-toolbar {
+    z-index: 1000 !important;
+  }
+  

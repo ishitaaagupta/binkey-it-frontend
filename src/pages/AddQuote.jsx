@@ -58,9 +58,9 @@ const AddQuote = () => {
           toolbar: [
             "heading", "|", "bold", "italic", "underline", "strikethrough", "link",
             "bulletedList", "numberedList", "blockQuote", "|", "undo", "redo", "|",
-            "alignment",
+            "alignment"
           ],
-          alignment: { options: ["left", "center", "right", "justify"] },
+          alignment: { options: ["left", "center", "right", "justify"] }
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
