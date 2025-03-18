@@ -15,6 +15,12 @@ const Login = () => {
         email: "",
         password: "",
     });
+
+    const [touched, setTouched] = useState({
+        email: false,
+        password: false,
+    });
+
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -22,15 +28,21 @@ const Login = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        setData((prev) => {
-            return {
-                ...prev,
-                [name]: value
-            };
-        });
+        setData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
-    const valideValue = Object.values(data).every(el => el);
+    const handleBlur = (e) => {
+        const { name } = e.target;
+        setTouched((prev) => ({
+            ...prev,
+            [name]: true
+        }));
+    };
+
+    const isValid = data.email && data.password;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -57,6 +69,12 @@ const Login = () => {
                     email: "",
                     password: "",
                 });
+
+                setTouched({
+                    email: false,
+                    password: false,
+                });
+
                 navigate("/");
             }
 
@@ -74,13 +92,14 @@ const Login = () => {
                             label="Email"
                             type="email"
                             variant="outlined"
-                            error={!data.email && !valideValue}
-                            helperText={!data.email && !valideValue ? "Email is required" : ""}
+                            error={touched.email && !data.email}
+                            helperText={touched.email && !data.email ? "Email is required" : ""}
+                            onBlur={handleBlur}
                             InputLabelProps={{
-                                style: { color: '#1F2937' }, // Green-800 color for label
+                                style: { color: '#1F2937' }, // Dark label color
                             }}
                             InputProps={{
-                                style: { backgroundColor: 'transparent' }, // No fill color
+                                style: { backgroundColor: 'transparent' }, // Transparent input background
                             }}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
@@ -107,13 +126,14 @@ const Login = () => {
                             label="Password"
                             type={showPassword ? "text" : "password"}
                             variant="outlined"
-                            error={!data.password && !valideValue}
-                            helperText={!data.password && !valideValue ? "Password is required" : ""}
+                            error={touched.password && !data.password}
+                            helperText={touched.password && !data.password ? "Password is required" : ""}
+                            onBlur={handleBlur}
                             InputLabelProps={{
-                                style: { color: '#1F2937' }, // Green-800 color for label
+                                style: { color: '#1F2937' }, // Dark label color
                             }}
                             InputProps={{
-                                style: { backgroundColor: 'transparent' }, // No fill color
+                                style: { backgroundColor: 'transparent' }, // Transparent input background
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
@@ -146,7 +166,7 @@ const Login = () => {
                         <Link to={"/forgot-password"} className='block ml-auto hover:text-primary-200'>Forgot password?</Link>
                     </div>
 
-                    <button disabled={!valideValue} className={` ${valideValue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"} text-white py-2 rounded font-semibold my-3 tracking-wide`}>
+                    <button disabled={!isValid} className={` ${isValid ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"} text-white py-2 rounded font-semibold my-3 tracking-wide`}>
                         Login
                     </button>
                 </form>
