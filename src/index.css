@@ -25,3 +25,12 @@ body{
 .scrollbarCustom::-webkit-scrollbar-thumb{
     @apply bg-blue-100 rounded-full
 }
+
+/* Ensure CKEditor styles are applied */
+.ck-editor__editable {
+    min-height: 200px !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+
+  }
+  

@@ -8,14 +8,14 @@ import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import toast from 'react-hot-toast';
 import AxiosToastError from '../utils/AxiosToastError';
-// import { useGlobalContext } from '../provider/GlobalProvider';
+import { useGlobalContext } from '../provider/GlobalProvider';
 
 const Address = () => {
   const addressList = useSelector(state => state.addresses.addressList)
   const [openAddress,setOpenAddress] = useState(false)
   const [OpenEdit,setOpenEdit] = useState(false)
   const [editData,setEditData] = useState({})
-  // const { fetchAddress} = useGlobalContext()
+  const { fetchAddress} = useGlobalContext()
 
   const handleDisableAddress = async(id)=>{
     try {

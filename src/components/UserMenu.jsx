@@ -9,9 +9,9 @@ import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import isAdmin from "../utils/isAdmin";
-import Chip from '@mui/material/Chip';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
+import Chip from "@mui/material/Chip";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AddQuote from "../pages/AddQuote";
 
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
@@ -50,10 +50,10 @@ const UserMenu = ({ close }) => {
       <div className="text-sm flex items-center gap-2">
         <span className="max-w-52 text-ellipsis line-clamp-1">
           {user.name || user.mobile}{" "}
-          {user.role==="ADMIN" &&(
-          <span className="font-medium text-white bg-red-600 border border-white px-1 py-1 rounded">
-            {user.role === "ADMIN" ? "ADMIN" : ""}
-          </span>
+          {user.role === "ADMIN" && (
+            <span className="font-medium text-white bg-red-600 border border-white px-1 py-1 rounded">
+              {user.role === "ADMIN" ? "ADMIN" : ""}
+            </span>
           )}
         </span>
         <Link
@@ -87,7 +87,15 @@ const UserMenu = ({ close }) => {
             Sub Category
           </Link>
         )}
-
+        {isAdmin(user.role) && (
+          <Link
+            onClick={handleClose}
+            to={"/dashboard/AddQuote"}
+            className="px-2 hover:bg-orange-200 py-1"
+          >
+           Notepad
+          </Link>
+        )}
         {isAdmin(user.role) && (
           <Link
             onClick={handleClose}
@@ -121,7 +129,7 @@ const UserMenu = ({ close }) => {
           to={"/dashboard/address"}
           className="px-2 hover:bg-orange-200 py-1"
         >
-          Save Address
+          Saved Address
         </Link>
 
         <button

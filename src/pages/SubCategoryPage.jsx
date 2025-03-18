@@ -83,7 +83,7 @@ const SubCategoryPage = () => {
               return (
                 <p
                   key={c._id + "table"}
-                  className="px-1 inline-block text-center w-full bg-gradient-to-r from-yellow-300 to-yellow-700 text-transparent bg-clip-text"
+                  className="px-1 inline-block text-center w-full bg-gradient-to-r from-yellow-950 to-yellow-700 text-transparent bg-clip-text"
                 >
                   {c.name}
                 </p>

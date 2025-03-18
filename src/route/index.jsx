@@ -7,7 +7,7 @@ import SearchPage from "../pages/SearchPage";
 import ForgotPassword from "../pages/ForgotPassword";
 import OtpVerification from "../pages/OtpVerfication";
 import ResetPassword from "../pages/ResetPassword";
-import UserMenuMobile from "../pages/userMenuMobile"
+import UserMenuMobile from "../pages/userMenuMobile";
 import Dashboard from "../layouts/Dashboard";
 import Profile from "../pages/Profile";
 import MyOrders from "../pages/MyOrders";
@@ -23,9 +23,8 @@ import CartMobile from "../pages/CartMobile";
 import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
-
-
-
+import AddQuote from "../pages/AddQuote";
+import Notepad from "../components/Notepad";
 
 const router = createBrowserRouter([
   {
@@ -41,94 +40,127 @@ const router = createBrowserRouter([
         element: <SearchPage />,
       },
       {
-        path : 'login',
-        element : <Login/>
-    },
-    {
-        path : "register",
-        element : <Register/>
+        path: "login",
+        element: <Login />,
       },
       {
-          path : "forgot-password",
-          element : <ForgotPassword/>
+        path: "register",
+        element: <Register />,
       },
       {
-        path : "verification-otp",
-        element : <OtpVerification/>
-    },
-    {
-        path : "reset-password",
-        element : <ResetPassword/>
-    },
-    {
-      path : "user",
-      element : <UserMenuMobile/>
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "verification-otp",
+        element: <OtpVerification />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
+      },
+      {
+        path: "user",
+        element: <UserMenuMobile />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+          {
+            path: "MyOrders",
+            element: <MyOrders />,
+          },
+          {
+            path: "address",
+            element: <Address />,
+          },
+          {
+            path: "category",
+            element: (
+              <AdminPermision>
+                <CategoryPage />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "subcategory",
+            element: (
+              <AdminPermision>
+                <SubCategoryPage />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "addQuote",
+            element: (
+              <AdminPermision>
+                <AddQuote />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "notepad",
+            element: (
+              <AdminPermision>
+                <Notepad />
+              </AdminPermision>
+            ),
+          },
+          
+          {
+            path: "upload-product",
+            element: (
+              <AdminPermision>
+                <UploadProduct />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "product",
+            element: (
+              <AdminPermision>
+                <ProductAdmin />
+              </AdminPermision>
+            ),
+          },
+        ],
+      },
+      {
+        path: ":category",
+        children: [
+          {
+            path: ":subCategory",
+            element: <ProductListPage />,
+          },
+        ],
+      },
+      {
+        path: "product/:product",
+        element: <ProductDisplayPage />,
+      },
+      {
+        path: "cart",
+        element: <CartMobile />,
+      },
+      {
+        path: "checkout",
+        element: <CheckoutPage />,
+      },
+      {
+        path: "success",
+        element: <Success />,
+      },
+      {
+        path: "cancel",
+        element: <Cancel />,
+      },
+    ],
   },
-  {
-    path : "dashboard",
-    element : <Dashboard/>,
-    children : [
-        {
-            path : "profile",
-            element : <Profile/>
-        },
-        {
-          path:"MyOrders",
-          element:<MyOrders/>
-        },
-        {
-          path : "address",
-          element : <Address/>
-      },
-      {
-          path : 'category',
-          element : <AdminPermision><CategoryPage/></AdminPermision>
-      },
-      {
-          path : "subcategory",
-          element : <AdminPermision><SubCategoryPage/></AdminPermision>
-      },
-      {
-          path : 'upload-product',
-          element : <AdminPermision><UploadProduct/></AdminPermision>
-      },
-      {
-          path : 'product',
-          element : <AdminPermision><ProductAdmin/></AdminPermision>
-      }
-  ]
-},
-{
-  path : ":category",
-  children : [
-      {
-          path : ":subCategory",
-          element : <ProductListPage/>
-      }
-  ]
-},
-{
-  path : "product/:product",
-  element : <ProductDisplayPage/>
-},
-{
-  path : 'cart',
-  element : <CartMobile/>
-},
-{
-  path : "checkout",
-  element : <CheckoutPage/>
-},
-{
-  path : "success",
-  element : <Success/>
-},
-{
-  path : 'cancel',
-  element : <Cancel/>
-}
-]
-}
-])
+]);
 
-export default router
+export default router;
