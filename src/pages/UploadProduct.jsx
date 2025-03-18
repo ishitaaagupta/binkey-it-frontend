@@ -44,7 +44,7 @@ const UploadProduct = () => {
   };
 
   const handleUploadImage = async (e) => {
-    const files = Array.from(e.target.files); // Get all selected files
+    const files = Array.from(e.target.files);
 
     if (!files.length) {
       return;
@@ -55,13 +55,13 @@ const UploadProduct = () => {
       files.map(async (file) => {
         const response = await uploadImage(file);
         const { data: ImageResponse } = response;
-        return ImageResponse.data.url; // Return the image URL
+        return ImageResponse.data.url;
       })
     );
 
     setData((prev) => ({
       ...prev,
-      image: [...prev.image, ...uploadedImages], // Append new images to the existing array
+      image: [...prev.image, ...uploadedImages],
     }));
     setImageLoading(false);
   };
@@ -143,14 +143,14 @@ const UploadProduct = () => {
   };
 
   return (
-    <section className="">
-      <div className="p-2 bg-white shadow-md flex items-center justify-between">
-        <h2 className="font-semibold">Upload Product</h2>
+    <section className="bg-gray-100 min-h-screen p-6">
+      <div className="bg-white shadow-md rounded-lg p-4 mb-6">
+        <h2 className="text-2xl font-semibold text-gray-800">Upload Product</h2>
       </div>
-      <div className="grid p-3">
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          <div className="grid gap-1">
-            <label htmlFor="name" className="font-medium">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <form className="grid gap-6" onSubmit={handleSubmit}>
+          <div className="grid gap-2">
+            <label htmlFor="name" className="font-medium text-gray-700">
               Name
             </label>
             <input
@@ -161,11 +161,11 @@ const UploadProduct = () => {
               value={data.name}
               onChange={handleChange}
               required
-              className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
+              className="bg-gray-50 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
-          <div className="grid gap-1">
-            <label htmlFor="description" className="font-medium">
+          <div className="grid gap-2">
+            <label htmlFor="description" className="font-medium text-gray-700">
               Description
             </label>
             <textarea
@@ -176,23 +176,23 @@ const UploadProduct = () => {
               onChange={handleChange}
               required
               rows={3}
-              className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded resize-none"
+              className="bg-gray-50 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-200 resize-none"
             />
           </div>
           <div>
-            <p className="font-medium">Image</p>
+            <p className="font-medium text-gray-700">Image</p>
             <div>
               <label
                 htmlFor="productImage"
-                className="bg-blue-50 h-24 border rounded flex justify-center items-center cursor-pointer"
+                className="bg-gray-50 h-24 border border-gray-300 rounded flex justify-center items-center cursor-pointer hover:bg-gray-200 transition"
               >
                 <div className="text-center flex justify-center items-center flex-col">
                   {imageLoading ? (
                     <Loading />
                   ) : (
                     <>
-                      <FaCloudUploadAlt size={35} />
-                      <p>Upload Image</p>
+                      <FaCloudUploadAlt size={35} className="text-gray-500" />
+                      <p className="text-gray-500">Upload Image</p>
                     </>
                   )}
                 </div>
@@ -201,25 +201,25 @@ const UploadProduct = () => {
                   id="productImage"
                   className="hidden"
                   accept="image/*"
-                  multiple // Allow multiple file selection
+                  multiple
                   onChange={handleUploadImage}
                 />
               </label>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 mt-4">
                 {data.image.map((img, index) => (
                   <div
                     key={img + index}
-                    className="h-20 mt-1 w-20 min-w-20 bg-blue-50 border relative group"
+                    className="h-20 w-20 min-w-20 bg-gray-50 border border-gray-300 relative group rounded overflow-hidden"
                   >
                     <img
                       src={img}
                       alt={img}
-                      className="w-full h-full object-scale-down cursor-pointer"
+                      className="w-full h-full object-cover cursor-pointer"
                       onClick={() => setViewImageURL(img)}
                     />
                     <div
                       onClick={() => handleDeleteImage(index)}
-                      className="absolute bottom-0 right-0 p-1 bg-red-600 hover:bg-red-600 rounded text-white hidden group-hover:block cursor-pointer"
+                      className="absolute bottom-0 right-0 p-1 bg-red-600 hover:bg-red-700 rounded text-white hidden group-hover:block cursor-pointer"
                     >
                       <MdDelete />
                     </div>
@@ -228,11 +228,11 @@ const UploadProduct = () => {
               </div>
             </div>
           </div>
-          <div className="grid gap-1">
-            <label className="font-medium">Category</label>
+          <div className="grid gap-2">
+            <label className="font-medium text-gray-700">Category</label>
             <div>
               <select
-                className="bg-blue-50 border w-full p-2 rounded"
+                className="bg-gray-50 border border-gray-300 w-full p-3 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
                 value={selectCategory}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -252,11 +252,11 @@ const UploadProduct = () => {
                   </option>
                 ))}
               </select>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3 mt-2">
                 {data.category.map((c, index) => (
                   <div
                     key={c._id + index + "productsection"}
-                    className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
+                    className="text-sm flex items-center gap-1 bg-gray-50 border border-gray-300 rounded p-2"
                   >
                     <p>{c.name}</p>
                     <div
@@ -270,11 +270,11 @@ const UploadProduct = () => {
               </div>
             </div>
           </div>
-          <div className="grid gap-1">
-            <label className="font-medium">Sub Category</label>
+          <div className="grid gap-2">
+            <label className="font-medium text-gray-700">Sub Category</label>
             <div>
               <select
-                className="bg-blue-50 border w-full p-2 rounded"
+                className="bg-gray-50 border border-gray-300 w-full p-3 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
                 value={selectSubCategory}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -289,20 +289,18 @@ const UploadProduct = () => {
                   setSelectSubCategory("");
                 }}
               >
-                <option value={""} className="text-neutral-600">
-                  Select Sub Category
-                </option>
+                <option value={""}>Select Sub Category</option>
                 {allSubCategory.map((c) => (
                   <option key={c._id} value={c._id}>
                     {c.name}
                   </option>
                 ))}
               </select>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3 mt-2">
                 {data.subCategory.map((c, index) => (
                   <div
                     key={c._id + index + "productsection"}
-                    className="text-sm flex items-center gap-1 bg-blue-50 mt-2"
+                    className="text-sm flex items-center gap-1 bg-gray-50 border border-gray-300 rounded p-2"
                   >
                     <p>{c.name}</p>
                     <div
@@ -317,8 +315,8 @@ const UploadProduct = () => {
             </div>
           </div>
 
-          <div className="grid gap-1">
-            <label htmlFor="unit" className="font-medium">
+          <div className="grid gap-2">
+            <label htmlFor="unit" className="font-medium text-gray-700">
               Unit
             </label>
             <input
@@ -329,12 +327,12 @@ const UploadProduct = () => {
               value={data.unit}
               onChange={handleChange}
               required
-              className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
+              className="bg-gray-50 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
 
-          <div className="grid gap-1">
-            <label htmlFor="stock" className="font-medium">
+          <div className="grid gap-2">
+            <label htmlFor="stock" className="font-medium text-gray-700">
               Number of Stock
             </label>
             <input
@@ -345,12 +343,12 @@ const UploadProduct = () => {
               value={data.stock}
               onChange={handleChange}
               required
-              className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
+              className="bg-gray-50 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
 
-          <div className="grid gap-1">
-            <label htmlFor="price" className="font-medium">
+          <div className="grid gap-2">
+            <label htmlFor="price" className="font-medium text-gray-700">
               Price
             </label>
             <input
@@ -361,12 +359,12 @@ const UploadProduct = () => {
               value={data.price}
               onChange={handleChange}
               required
-              className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
+              className="bg-gray-50 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
 
-          <div className="grid gap-1">
-            <label htmlFor="discount" className="font-medium">
+          <div className="grid gap-2">
+            <label htmlFor="discount" className="font-medium text-gray-700">
               Discount
             </label>
             <input
@@ -377,14 +375,14 @@ const UploadProduct = () => {
               value={data.discount}
               onChange={handleChange}
               required
-              className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
+              className="bg-gray-50 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
 
-          {/**add more field**/}
+          {/** Add more fields **/}
           {Object.keys(data.more_details).map((k) => (
-            <div className="grid gap-1" key={k}>
-              <label htmlFor={k} className="font-medium">
+            <div className="grid gap-2" key={k}>
+              <label htmlFor={k} className="font-medium text-gray-700">
                 {k}
               </label>
               <input
@@ -402,16 +400,12 @@ const UploadProduct = () => {
                   }));
                 }}
                 required
-                className="bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded"
+                className="bg-gray-50 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-200"
               />
             </div>
           ))}
-             {/* <div onClick={()=>setOpenAddField(true)} className=' hover:bg-primary-200 bg-white py-1 px-3 w-32 text-center font-semibold border border-primary-200 hover:text-neutral-900 cursor-pointer rounded'>
-                  Add Fields
-                </div> */}
 
-
-          <button className="bg-primary-100 hover:bg-primary-200 py-2 rounded font-semibold">
+          <button className="bg-primary-100 hover:primary-200 text-black py-2 rounded font-semibold transition">
             Submit
           </button>
         </form>
@@ -432,4 +426,5 @@ const UploadProduct = () => {
     </section>
   );
 };
+
 export default UploadProduct;
